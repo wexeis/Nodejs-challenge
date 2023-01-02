@@ -37,8 +37,8 @@ function onDataReceived(text) {
   if (text === 'quit\n' || text === 'exit\n') {
     quit();
   }
-  else if(text === 'hello\n'){
-    hello();
+  else if(text.slice(0,5) === 'hello'){
+    hello(text);
   }
 
   else if(text === 'help\n'){
@@ -52,8 +52,10 @@ function onDataReceived(text) {
 
 /**
  *  help, lists all possible commands
+ * command to exit = exit or quit
+ * command for greetings = hello + your name
  *
- * @returns {void}
+ * 
  */
 function help(){
 
@@ -76,8 +78,9 @@ function unknownCommand(c){
  *
  * @returns {void}
  */
-function hello(){
-  console.log('hello!')
+function hello(text){
+  let noSpace = text.slice(6, text.length).trim() 
+  console.log(text.slice(0,5) +' ' + noSpace + "!")
 }
 
 
