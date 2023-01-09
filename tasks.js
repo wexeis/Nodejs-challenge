@@ -1,18 +1,7 @@
 const fs = require('fs');
-fs.readFile('./database.json', 'utf-8', (err, jsonString) => {
-  if (err) {
-    console.log(err);
-  }
-  else {
-    try{const data = JSON.parse(jsonString);
-    console.log(data.address);}catch(err){
-      console.log("error parsing JSON", err )
-    }
-  }
-})
 
-const jsonString = JSON.stringify(tasks);
-console.log(jsonString)
+
+
 /**
  * Starts the application
  * This is the function that is run when the app starts
@@ -146,7 +135,7 @@ else{
 
 function help(){
 
-  console.log('\ncommand to show list of tasks = list\n\ncommand to add task = add(space)the wanted task\n\ncommand to remove task = remove(space)the number of the task\n\ncommand to edit task = edit(space)the number of the task(space)the new task\n\ncommand to check a task = check(space)the number of the task\n\ncommand to uncheck task = uncheck(space)the number of the task\n\ncommand to say hello name! = hello(space)name\n\ncommand to exit= exit or quit');
+  console.log('\ncommand to show list of tasks = list\n\ncommand to add task = add(space)the wanted task\n\ncommand to remove task = remove(space)the number of the task\n\ncommand to edit task = edit(space)the number of the task(space)the new task\n\ncommand to check a task = check(space)the number of the task\n\ncommand to uncheck task = uncheck(space)the number of the task\n\nto save tasks = save\n\nto load tasks = load\n\ncommand to say hello name! = hello(space)name\n\ncommand to exit= exit or quit');
 }
 /**
  * prints "unknown command"
