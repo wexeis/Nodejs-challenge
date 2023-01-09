@@ -1,4 +1,18 @@
+const fs = require('fs');
+fs.readFile('./database.json', 'utf-8', (err, jsonString) => {
+  if (err) {
+    console.log(err);
+  }
+  else {
+    try{const data = JSON.parse(jsonString);
+    console.log(data.address);}catch(err){
+      console.log("error parsing JSON", err )
+    }
+  }
+})
 
+const jsonString = JSON.stringify(tasks);
+console.log(jsonString)
 /**
  * Starts the application
  * This is the function that is run when the app starts
@@ -10,6 +24,7 @@
  * @returns {void}
  */
 function startApp(name){
+ 
   process.stdin.resume();
   process.stdin.setEncoding('utf8');
   process.stdin.on('data', onDataReceived);
@@ -80,21 +95,23 @@ function onDataReceived(text) {
    
     uncheck(tasks, text);
   }
+
+  else if(text === 'save\n'){
+    saveData();
+  }
+  else if(text === 'load\n'){
+    loadmytasks(tasks);
+  }
+  
   else{
     unknownCommand(text);
   }
+  
   
 }
 var tasks = [
  
 ];
-/**
- *  help, lists all possible commands
- * command to exit = exit or quit
- * command for greetings = hello + your name
- *
- * 
- */
 
 
 
@@ -119,10 +136,17 @@ else{
   }
    }
 
+/**
+ *  help, lists all possible commands
+ * command to exit = exit or quit
+ * command for greetings = hello + your name
+ *
+ * 
+ */
 
 function help(){
 
-  console.log('command to exit= exit or quit \ncommand to say hello! = hello');
+  console.log('\ncommand to show list of tasks = list\n\ncommand to add task = add(space)the wanted task\n\ncommand to remove task = remove(space)the number of the task\n\ncommand to edit task = edit(space)the number of the task(space)the new task\n\ncommand to check a task = check(space)the number of the task\n\ncommand to uncheck task = uncheck(space)the number of the task\n\ncommand to say hello name! = hello(space)name\n\ncommand to exit= exit or quit');
 }
 /**
  * prints "unknown command"
@@ -155,7 +179,7 @@ function listTasks(arr) {
   
   console.log('\nTasks:\n');
   tasks.forEach(object => {
-    console.log(`${object.id}: ${object.name} ${object.done}\n`);
+    console.log(`${object.id}: ${object.done} ${object.name}\n`);
   });
 }
 
@@ -173,7 +197,7 @@ function addTask(task) {
   });
   }
   console.log(`Task "${task}" added to the list`);
-  console.log(tasks)
+
 }
 /*
 remove tasks 
@@ -191,7 +215,7 @@ if(arg.trim().length === 6){
   
   console.log('\nupdated tasks:\n')
   arr.forEach(object => {
-    console.log( `${object.id}: ${object.name} ${object.done}\n`);
+    console.log( `${object.id}: ${object.done} ${object.name}\n`);
  });
 }
 
@@ -217,7 +241,7 @@ else{
   }
   console.log('\nupdated tasks:\n')
   arr.forEach(object => {
-  console.log( `${object.id}: ${object.name} ${object.done}\n`);
+  console.log( `${object.id}: ${object.done}  ${object.name}\n`);
  })
 }
 
@@ -250,7 +274,7 @@ else if (words.length > 1 && Number(words[1]) > 0) {
 
     console.log('\nedited tasks:\n')
   arr.forEach(object => {
-  console.log( `${object.id}: ${object.name} ${object.done}\n`)
+  console.log( `${object.id}: ${object.done} ${object.name}\n`)
     })
   }
  
@@ -263,14 +287,27 @@ else {
 
   console.log('\nedited tasks:\n')
   arr.forEach(object => {
-  console.log( `${object.id}: ${object.name} ${object.done}\n`)
+  console.log( `${object.id}: ${object.done} ${object.name}\n`)
     })
   
 }
 }
 
 
+function saveData(data) {
+  var data = JSON.stringify(tasks);
+  fs.writeFileSync("./database.json", data)
+  console.log(data);
+}
 
+function loadmytasks() {
+  var data = fs.readFileSync("./database.json")
+  var d= JSON.parse(data);
+  tasks= tasks.concat(d)
+  tasks.forEach(object => {
+    console.log( `${object.id}: ${object.done} ${object.name}\n`)
+      })
+}
 
 /**
  * Exits the application
@@ -280,7 +317,13 @@ else {
 function quit(){
   console.log('Quitting now, goodbye!')
   process.exit();
+  
 }
 
 // The following line starts the application
 startApp("Mohamad Moughnie")
+
+
+
+
+
